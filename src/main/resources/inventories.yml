@@ -1,0 +1,83 @@
+characters_levels_view:
+  title: "Podgląd poziomów"
+  items:
+    character:
+      name: "&6Postać %name%"
+      lore:
+        - "&7Dane: "
+        - "&7↳ Poziom: &e%level%"
+        - "&7↳ Doświadczenie: &e%experience%"
+
+character_level_tree:
+  title: "Drzewo ulepszeń"
+  items:
+    upgrade:
+      name: "&6Ulepszenie"
+      lore:
+        - "&7Dane: "
+        - "&7↳ Wymagane: &e%points%"
+        - "&7↳ Poziom: &e%level%"
+        - "&7Nagroda: "
+        - "&7↳ Typ: &e%reward_type%"
+        - "&7↳ Nagroda: &e%reward%"
+
+fort_manage_inventory:
+  title: "Zarządzanie chunkami fortu"
+  items:
+    chunk:
+      name: "&6Chunk"
+      lore:
+        - "&7Dane: "
+        - "&7↳ Posiadane: &e%owned%"
+        - "&7↳ Chunk: &e%chunk%"
+        - "&7↳ Koszt: &e%cost%"
+        - "&7↳ Budynek: &e%building%"
+
+fort_chunk_manage:
+  title: "Zarządzanie chunkiem"
+  items:
+    information:
+      name: "&6Informacje"
+      lore:
+        - "&7Dane: "
+        - "&7↳ Chunk: &e%chunk%"
+    building:
+      name: "&6Budynek"
+      lore:
+        - "&7Dane: "
+        - "&7Istnieje: &e%exists%"
+        - "&7↳ Typ: &e%type%"
+        - "&7↳ Poziom: &e%level%"
+
+fort_buildings_preview:
+  title: "Podgląd budynków"
+  items:
+    building:
+      name: "&6Budynek"
+      lore:
+         - "&7Dane: "
+         - "&7↳ Typ: &e%type%"
+         - "&7↳ Opis: &e%description%"
+
+fort_building_manage:
+  title: "Zarządzanie budynkiem"
+  items:
+    information:
+      name: "&6Informacje"
+      lore:
+        - "&7Dane: "
+        - "&7↳ Typ: &e%type%"
+        - "&7↳ Poziom: &e%level%"
+    upgrade:
+      name: "&6Ulepszenie"
+      lore:
+        - "&7Dane: "
+        - "&7↳ Poziom: &e%level%"
+
+global:
+  next_page:
+    name: "&7Następna strona"
+  previous_page:
+    name: "&7Poprzednia strona"
+  home_page:
+    name: "&7Powrót"

@@ -1,0 +1,7 @@
+name: OpForts
+version: 1.0-SNAPSHOT
+main: me.opkarol.opforts.OpForts
+author: OpKarol
+api-version: "1.13"
+load: POSTWORLD
+depend: [Citizens]

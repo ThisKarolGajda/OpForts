@@ -1,0 +1,8 @@
+isMysqlEnabled: false
+# MYSQL Database connection settings
+connectionSettings:
+  host: localhost
+  port: 3306
+  database: database
+  username: root
+  password: ""

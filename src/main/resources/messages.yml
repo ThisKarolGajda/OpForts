@@ -1,0 +1,3 @@
+commands:
+  no_permission: "&cNie masz pozwolenia na używanie tej komendy."
+  on_cooldown: "&cMusisz poczekać, zanim użyjesz tej komendy ponownie."
