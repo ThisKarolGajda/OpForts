@@ -2,10 +2,11 @@ package me.opkarol.opforts.forts.commands;
 
 import me.opkarol.opforts.forts.FortHandler;
 import me.opkarol.opforts.forts.FortHighlighter;
+import me.opkarol.opforts.forts.building.BuildingPreviewManager;
+import me.opkarol.opforts.forts.building.BuildingSchematic;
+import me.opkarol.opforts.forts.building.BuildingsPreviewSchematicsOrderType;
 import me.opkarol.opforts.forts.database.FortsDatabase;
-import me.opkarol.opforts.forts.inventories.FortBuildingsPreviewInventory;
-import me.opkarol.opforts.forts.inventories.FortChunkManageInventory;
-import me.opkarol.opforts.forts.inventories.FortManageInventory;
+import me.opkarol.opforts.forts.inventories.*;
 import me.opkarol.opforts.forts.models.Fort;
 import me.opkarol.opforts.forts.models.buildings.FortBuilding;
 import me.opkarol.opforts.forts.models.buildings.FortBuildingType;
@@ -15,6 +16,7 @@ import me.opkarol.opforts.safeinventory.SafeInventoryManager;
 import me.opkarol.oplibrary.Plugin;
 import me.opkarol.oplibrary.commands.annotations.Command;
 import me.opkarol.oplibrary.commands.annotations.Subcommand;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -141,5 +143,30 @@ public class FortCommand {
     @Subcommand("test-safe-inventory-retrieve")
     public void testSafeInventoryRetrieve(Player sender) {
         SafeInventoryManager.restoreHotbar(sender);
+    }
+
+    @Subcommand("display-preview")
+    public void displayPreview(@NotNull Player player) {
+        Chunk chunk = player.getLocation().getChunk();
+
+        BuildingPreviewManager.startPreview(player, chunk, BuildingsPreviewSchematicsOrderType.HOUSE, 10);
+    }
+
+    @Subcommand("required-blocks-for-building")
+    public void requiredBlocksForBuilding(@NotNull Player player, String buildingType) {
+        BuildingSchematic schematic = BuildingSchematic.fromSerializedFile(buildingType);
+        new FortBuildingBlocksRequired(player, schematic);
+    }
+
+    @Subcommand("vault")
+    public void vault(@NotNull Player player) {
+        Optional<Fort> optional = FortHandler.getOwnerFort(player.getUniqueId());
+        if (optional.isEmpty()) {
+            player.sendMessage("Fort not found!");
+            return;
+        }
+
+        Fort fort = optional.get();
+        new FortVaultInventory(player, fort);
     }
 }

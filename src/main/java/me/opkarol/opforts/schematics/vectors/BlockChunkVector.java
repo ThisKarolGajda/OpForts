@@ -1,6 +1,9 @@
 package me.opkarol.opforts.schematics.vectors;
 
+import me.opkarol.opforts.utils.ChunkUtils;
 import me.opkarol.oplibrary.location.StringUtil;
+import org.bukkit.Chunk;
+import org.bukkit.block.Block;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,5 +55,17 @@ public record BlockChunkVector(int xOffset, int y, int zOffset) implements Seria
         }
 
         return null;
+    }
+
+    @Contract("_, _, _ -> new")
+    public @NotNull BlockChunkVector rotate2D(int angle, int centerX, int centerZ) {
+        double radians = Math.toRadians(angle);
+        int x = (int) Math.round((xOffset - centerX) * Math.cos(radians) - (zOffset - centerZ) * Math.sin(radians)) + centerX;
+        int z = (int) Math.round((xOffset - centerX) * Math.sin(radians) + (zOffset - centerZ) * Math.cos(radians)) + centerZ;
+        return new BlockChunkVector(x, y, z);
+    }
+
+    public @NotNull Block toBlock(@NotNull Chunk chunk) {
+        return chunk.getBlock(xOffset, y + ChunkUtils.calculateOptimalChunkYHeight(chunk), zOffset);
     }
 }

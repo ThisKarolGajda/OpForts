@@ -62,7 +62,15 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>me.opkarol.opforts</shadedPattern>
+                            <shadedPattern>me.opkarol.opforts.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>fr.mrmicky.fastboard</pattern>
+                            <shadedPattern>me.opkarol.opforts.fastboard</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.jeff_media.customblockdata</pattern>
+                            <shadedPattern>me.opkarol.opforts.customblockdata</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
@@ -96,6 +104,15 @@
             <id>enginehub-maven</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
+        <repository>
+            <id>jitpack</id>
+            <url>https://jitpack.io/</url>
+        </repository>
+        <repository>
+            <id>codemc-repo</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+            <layout>default</layout>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -103,6 +120,24 @@
             <groupId>me.opkarol</groupId>
             <artifactId>OpLibrary</artifactId>
             <version>1.7.6-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.decentsoftware-eu</groupId>
+            <artifactId>decentholograms</artifactId>
+            <version>2.8.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jeff-media</groupId>
+            <artifactId>custom-block-data</artifactId>
+            <version>2.2.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>fr.mrmicky</groupId>
+            <artifactId>fastboard</artifactId>
+            <version>2.1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

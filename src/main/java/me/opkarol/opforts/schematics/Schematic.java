@@ -1,7 +1,9 @@
 package me.opkarol.opforts.schematics;
 
+import me.opkarol.opforts.forts.building.BuildingSchematic;
 import me.opkarol.opforts.schematics.vectors.BlockChunkVector;
 import me.opkarol.opforts.schematics.vectors.BlockVector;
+import me.opkarol.opforts.utils.ChunkUtils;
 import me.opkarol.oplibrary.Plugin;
 import me.opkarol.oplibrary.runnable.OpRunnable;
 import org.bukkit.Chunk;
@@ -31,39 +33,38 @@ public class Schematic {
         this.blocks = new HashMap<>();
     }
 
-    public static @NotNull Schematic fromSerialized(String serializedData) {
-        Schematic schematic = new Schematic(null);
+    public static @NotNull BuildingSchematic fromSerialized(String serializedData) {
+        BuildingSchematic schematic = new BuildingSchematic(null);
         schematic.deserialize(serializedData);
         return schematic;
     }
 
-
-    public static @NotNull Schematic fromSerialized(String name, String serializedData) {
-        Schematic schematic = new Schematic(name);
+    public static @NotNull BuildingSchematic fromSerialized(String name, String serializedData) {
+        BuildingSchematic schematic = new BuildingSchematic(name);
         schematic.deserialize(serializedData);
         return schematic;
     }
 
-    public static @NotNull Schematic fromSerializedFile(String fileName) {
-        Schematic schematic = new Schematic(null);
+    public static @NotNull BuildingSchematic fromSerializedFile(String fileName) {
+        BuildingSchematic schematic = new BuildingSchematic(null);
         schematic.deserializeFile(fileName);
         return schematic;
     }
 
-    public static @NotNull Schematic fromSerializedFile(String name, String fileName) {
-        Schematic schematic = new Schematic(name);
+    public static @NotNull BuildingSchematic fromSerializedFile(String name, String fileName) {
+        BuildingSchematic schematic = new BuildingSchematic(name);
         schematic.deserializeFile(fileName);
         return schematic;
     }
 
-    public static @NotNull Schematic fromChunk(Chunk chunk, int yStartLocation, int yEndLocation) {
-        Schematic schematic = new Schematic(null);
+    public static @NotNull BuildingSchematic fromChunk(Chunk chunk, int yStartLocation, int yEndLocation) {
+        BuildingSchematic schematic = new BuildingSchematic(null);
         schematic.loadChunk(chunk, yStartLocation, yEndLocation);
         return schematic;
     }
 
-    public static @NotNull Schematic fromChunk(String name, Chunk chunk, int yStartLocation, int yEndLocation) {
-        Schematic schematic = new Schematic(name);
+    public static @NotNull BuildingSchematic fromChunk(String name, Chunk chunk, int yStartLocation, int yEndLocation) {
+        BuildingSchematic schematic = new BuildingSchematic(name);
         schematic.loadChunk(chunk, yStartLocation, yEndLocation);
         return schematic;
     }
@@ -100,8 +101,8 @@ public class Schematic {
         blocks = SchematicHandler.loadChunk(chunk, yStartLocation, yEndLocation);
     }
 
-    public void paste(Chunk chunk, int yStartLocation) {
-        SchematicHandler.pasteSchematic(chunk, blocks, yStartLocation);
+    public void paste(Chunk chunk) {
+        SchematicHandler.pasteSchematic(chunk, blocks, ChunkUtils.calculateOptimalChunkYHeight(chunk));
     }
 
     public BlockVector getDimensions() {
@@ -112,16 +113,16 @@ public class Schematic {
         return name == null || blocks == null || blocks.isEmpty();
     }
 
-    public void displayPreview(@NotNull Player player) {
+    public void displayPreview(@NotNull Player player, Chunk chunk) {
         new OpRunnable(() -> {
-            Chunk chunk = player.getLocation().getChunk();
-            int blockY = player.getLocation().getBlockY();
             UUID uuid = player.getUniqueId();
+            int blockY = ChunkUtils.calculateOptimalChunkYHeight(chunk);
             World world = player.getWorld();
+            Plugin.getDependency().get(SchematicFakeBlockTemporaryStorage.class).removeFakeBlocks(uuid);
 
             for (int y = blockY; y < blockY + getDimensions().y(); y++) {
-                for (int x = 0; x < 16; x++) {
-                    for (int z = 0; z < 16; z++) {
+                for (int x = 0; x < getDimensions().x(); x++) {
+                    for (int z = 0; z < getDimensions().z() + 1; z++) {
                         Block block = chunk.getBlock(x, y, z);
                         Location location = block.getLocation();
                         Plugin.getDependency().get(SchematicFakeBlockTemporaryStorage.class).addFakeBlock(uuid, BlockVector.of(location), world);
@@ -136,5 +137,9 @@ public class Schematic {
                 }
             }
         }).runTaskAsynchronously();
+    }
+
+    public void displayPreview(Player player) {
+        displayPreview(player, player.getLocation().getChunk());
     }
 }

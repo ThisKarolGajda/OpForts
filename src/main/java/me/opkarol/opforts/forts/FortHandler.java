@@ -8,6 +8,7 @@ import me.opkarol.opforts.utils.ChunkUtils;
 import me.opkarol.oplibrary.Plugin;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -205,5 +206,9 @@ public class FortHandler {
         return Plugin.getDependency().get(FortsDatabase.class).getAllForts().stream()
                 .filter(fort -> fort.members.getOwner().equals(player))
                 .findFirst();
+    }
+
+    public static @NotNull Optional<Fort> getOwnerFort(OfflinePlayer player) {
+        return getOwnerFort(player.getUniqueId());
     }
 }

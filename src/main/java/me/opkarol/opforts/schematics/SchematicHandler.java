@@ -16,6 +16,7 @@ class SchematicHandler {
 
     public static @NotNull Map<BlockChunkVector, BlockData> loadChunk(Chunk chunk, int yStartLocation, int yEndLocation) {
         assert yStartLocation < yEndLocation;
+        int bedrockBlocks = 0;
         Map<BlockChunkVector, BlockData> set = new HashMap<>();
         for (int y = yStartLocation; y < yEndLocation; y++) {
             for (int x = 0; x < 16; x++) {
@@ -26,22 +27,35 @@ class SchematicHandler {
                         continue;
                     }
 
+                    if (block.getType() == Material.BEDROCK) {
+                        bedrockBlocks++;
+                    }
+
                     set.put(new BlockChunkVector(x, y - yStartLocation, z), block.getBlockData());
                 }
             }
         }
 
+        if (bedrockBlocks != 1) {
+            throw new RuntimeException("Schematic must have exactly one bedrock block (specialBlock)");
+        }
+
         return set;
     }
 
-    public static void pasteSchematic(Chunk chunk, Map<BlockChunkVector, BlockData> map, int yStartLocation) {
+    public static void pasteSchematic(Chunk chunk, @NotNull Map<BlockChunkVector, BlockData> map, int yStartLocation) {
         for (int y = yStartLocation; y < yStartLocation + calculateHeight(map.keySet()); y++) {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     Block block = chunk.getBlock(x, y, z);
                     BlockChunkVector vector = new BlockChunkVector(x, y - yStartLocation, z);
                     if (map.containsKey(vector)) {
-                        block.setType(map.get(vector).getMaterial());
+                        Material material = map.get(vector).getMaterial();
+                        if (material == Material.BEDROCK) {
+                            continue;
+                        }
+
+                        block.setType(material);
                         block.setBlockData(map.get(vector));
                     } else {
                         block.setType(Material.AIR);

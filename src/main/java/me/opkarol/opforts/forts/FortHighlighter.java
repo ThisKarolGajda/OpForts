@@ -60,11 +60,11 @@ public class FortHighlighter {
         final List<Location> locations = getFortBorderLocations(fort);
         for (int i = 0; i < 5; i++) {
             final double height = y + (i - 2) * 5;
-            new OpTimerRunnable().runTaskTimesUp((__, ___) -> {
+            new OpTimerRunnable(() -> {
                 for (Location location : locations) {
                     spawnParticle(location.getWorld(), location.getX(), height, location.getZ());
                 }
-            }, (____) -> {}, 30);
+            }, 30);
         }
 
     }

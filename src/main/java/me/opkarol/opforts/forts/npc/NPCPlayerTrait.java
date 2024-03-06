@@ -46,11 +46,12 @@ public class NPCPlayerTrait extends Trait {
         Location location = this.getNPC().getStoredLocation().clone();
         getNPC().destroy();
 
-        new OpTitle().setTitle("&7Zostajesz zaatakowany").setSubtitle("&7Przygotuj się").setStay(60).display(player);
-        new OpTimerRunnable().runTaskTimesDown((__, ___) -> {
+        new OpTitle("&7Zostajesz zaatakowany", "&7Przygotuj się", 5, 50, 5)
+                .display(player);
+        new OpTimerRunnable(() -> {
             new OpSound(Sound.BLOCK_ANVIL_PLACE).play(player);
             new OpParticle(Particle.EXPLOSION_HUGE).setLocation(location).display(sender);
-        }, (__) -> {}, 3);
-        new OpRunnable(() -> player.teleport(location)).runTaskLater(61L);
+        }, 3);
+        new OpRunnable(() -> player.teleport(location)).runTaskLater(60L);
     }
 }

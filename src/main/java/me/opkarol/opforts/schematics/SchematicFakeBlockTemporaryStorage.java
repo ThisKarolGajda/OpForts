@@ -47,10 +47,11 @@ public class SchematicFakeBlockTemporaryStorage extends BasicListener {
         }
 
         Tuple<World, List<BlockVector>> tuple = fakeBlocks.get(uuid);
-        if (tuple.first() == null || tuple.second() == null) {
+        if (tuple == null || tuple.first() == null || tuple.second() == null) {
             return;
         }
 
+        fakeBlocks.remove(uuid);
         for (BlockVector blockVector : tuple.second()) {
             Block block = tuple.first().getBlockAt(blockVector.x(), blockVector.y(), blockVector.z());
             player.sendBlockChange(block.getLocation(), block.getBlockData());

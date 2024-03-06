@@ -9,6 +9,7 @@ import me.opkarol.opforts.forts.models.chunks.FortChunks;
 import me.opkarol.opforts.forts.models.information.FortBasicInformation;
 import me.opkarol.opforts.forts.models.members.FortMembers;
 import me.opkarol.opforts.forts.models.politics.FortPolitics;
+import me.opkarol.opforts.forts.models.vault.FortVault;
 import me.opkarol.opforts.utils.ChunkUtils;
 import me.opkarol.oplibrary.Plugin;
 import me.opkarol.oplibrary.location.OpSerializableLocation;
@@ -28,6 +29,7 @@ public class Fort implements DatabaseEntity<FortId>, Serializable {
     public FortMembers members;
     public FortPolitics politics;
     public FortChunks chunks;
+    public FortVault vault;
 
     public Fort(@NotNull Player owner, String name) {
         this.basicInformation = new FortBasicInformation(new OpSerializableLocation(ChunkUtils.getChunkCenter(owner.getLocation())), name, null);
@@ -36,6 +38,7 @@ public class Fort implements DatabaseEntity<FortId>, Serializable {
         this.politics = new FortPolitics();
         this.chunks = new FortChunks();
         this.fortId = Plugin.getDependency().get(FortsDatabase.class).getNotTakenFortId();
+        this.vault = new FortVault();
 
         buildings.addBuilding(new FortBuilding(FortBuildingType.FORT, 0, ChunkLocation.from(basicInformation.getCenter())), this);
         save();

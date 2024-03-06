@@ -4,6 +4,8 @@ import me.opkarol.opforts.characters.commands.CharacterCommand;
 import me.opkarol.opforts.characters.database.CharactersDatabaseManager;
 import me.opkarol.opforts.core.EnderPearlBlockerListener;
 import me.opkarol.opforts.forts.FortBorderManager;
+import me.opkarol.opforts.forts.building.BuildingListener;
+import me.opkarol.opforts.forts.building.BuildingPreviewManager;
 import me.opkarol.opforts.forts.commands.FortCommand;
 import me.opkarol.opforts.forts.database.FortsDatabase;
 import me.opkarol.opforts.forts.listeners.BossBarFortListener;
@@ -38,6 +40,7 @@ public class OpForts extends Plugin {
         getDependency().register(FortBorderManager.class, new FortBorderManager());
         new BossBarFortListener();
         new BuildingHeartInteractListener();
+        new BuildingListener();
 
         // NPC
         net.citizensnpcs.api.CitizensAPI.getTraitFactory()
@@ -49,12 +52,6 @@ public class OpForts extends Plugin {
 
         // Safe Inventory
         getDependency().register(SafeInventoryManager.class, new SafeInventoryManager());
+        new BuildingPreviewManager();
     }
-
-    @Override
-    public void onDisable() {
-        getDependency().get(FortBorderManager.class).removePlayers();
-        super.onDisable();
-    }
-
 }

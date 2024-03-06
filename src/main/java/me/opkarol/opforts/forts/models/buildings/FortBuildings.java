@@ -4,17 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import me.opkarol.opforts.forts.models.Fort;
 import me.opkarol.opforts.forts.models.chunks.ChunkLocation;
-import me.opkarol.oplibrary.Plugin;
 import me.opkarol.oporm.SerializableFieldOrm;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,23 +52,13 @@ public class FortBuildings implements SerializableFieldOrm, Serializable {
         getBuildings().add(building);
         fort.save();
 
-        // Remove existing heart
-        Arrays.stream(building.getLocation().getChunk(fort.basicInformation.getCenter().getWorld()).getEntities()).forEach(entity -> {
-            if (entity instanceof ArmorStand armorStand) {
-                NamespacedKey key = new NamespacedKey(Plugin.getInstance(), "isBuildingHeart");
-                if (armorStand.getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
-                    String value = armorStand.getPersistentDataContainer().get(key, PersistentDataType.STRING);
-                    if ("true".equals(value)) {
-                        armorStand.remove();
-                    }
-                }
-            }
-        });
+        BuildingHeartManager.removeBuildingHearts(building.getLocation().getChunk(fort.basicInformation.getCenter().getWorld()));
 
         if (building.getLevel() == 0) {
             BuildingHeartManager.createBuildingHeart(building.getLocation().getCenter(fort.basicInformation.getCenter().getWorld()));
         } else {
             //TODO
+
         }
     }
 }

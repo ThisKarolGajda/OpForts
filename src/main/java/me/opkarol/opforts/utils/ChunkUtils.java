@@ -56,18 +56,29 @@ public class ChunkUtils {
         return world.getChunkAt(x, z);
     }
 
-    // This method should return the smallest x and z coordinates of the chunk, so
-    // pasting a schematic at the returned location will not cause any issues.
     @Contract("_ -> new")
     public static @NotNull Location getSmallestXYLocationAtChunk(@NotNull Chunk chunk) {
         World world = chunk.getWorld();
         int x = chunk.getX() << 4;
         int z = chunk.getZ() << 4;
-        int y = world.getHighestBlockYAt(x, z);
+        int y = calculateOptimalChunkYHeight(chunk);
         return new Location(world, x, y, z);
     }
 
     public static @NotNull String toString(@NotNull Chunk chunk) {
         return "[" + chunk.getX() + ", " + chunk.getZ() + "]";
+    }
+
+    public static int calculateOptimalChunkYHeight(Chunk chunk) {
+        int sumY = 0;
+        int totalBlocks = 0;
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                sumY += chunk.getWorld().getHighestBlockYAt(chunk.getX() * 16 + x, chunk.getZ() * 16 + z);
+                totalBlocks++;
+            }
+        }
+
+        return Math.max(totalBlocks == 0 ? -64 : (int) Math.round((double) sumY / totalBlocks) + 1, -64);
     }
 }

@@ -7,6 +7,8 @@ import me.opkarol.oplibrary.listeners.BasicListener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -37,6 +39,10 @@ public class SafeInventoryManager extends BasicListener implements IDisable {
         }
 
         savedHotbarSlots.put(player, hotbar);
+    }
+
+    public static boolean isHotbarSaved(Player player) {
+        return savedHotbarSlots.containsKey(player);
     }
 
     public static void restoreHotbar(Player player) {
@@ -143,6 +149,20 @@ public class SafeInventoryManager extends BasicListener implements IDisable {
                 return;
             }
 
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onPlayerPlaceBlock(BlockPlaceEvent event) {
+        if (savedHotbarSlots.containsKey(event.getPlayer())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onPlayerBreakBlock(BlockBreakEvent event) {
+        if (savedHotbarSlots.containsKey(event.getPlayer())) {
             event.setCancelled(true);
         }
     }

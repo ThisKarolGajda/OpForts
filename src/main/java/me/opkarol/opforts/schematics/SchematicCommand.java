@@ -5,7 +5,7 @@ import me.opkarol.oplibrary.commands.annotations.Subcommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-@Command("schematic")
+@Command("fort-schematic")
 public class SchematicCommand {
     private Schematic schematic;
 
@@ -20,7 +20,7 @@ public class SchematicCommand {
             return;
         }
 
-        schematic.paste(player.getLocation().getChunk(), player.getLocation().getBlockY());
+        schematic.paste(player.getLocation().getChunk());
     }
 
     @Subcommand("serialize")

@@ -2,6 +2,8 @@ package me.opkarol.opforts.forts;
 
 import me.opkarol.opforts.forts.models.Fort;
 import me.opkarol.opforts.forts.models.FortId;
+import me.opkarol.oplibrary.autostart.IDisable;
+import me.opkarol.oplibrary.autostart.OpAutoDisable;
 import me.opkarol.oplibrary.runnable.OpRunnable;
 import me.opkarol.oplibrary.wrappers.OpBossBar;
 import org.bukkit.Bukkit;
@@ -9,8 +11,12 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class FortBorderManager {
+public class FortBorderManager implements IDisable {
     private final Map<FortId, Set<UUID>> playersInsideFort = new HashMap<>();
+
+    public FortBorderManager() {
+        OpAutoDisable.add(this);
+    }
 
     public void addPlayer(FortId fortId, UUID playerUUID) {
         if (!playersInsideFort.containsKey(fortId)) {
@@ -59,6 +65,15 @@ public class FortBorderManager {
     }
 
     public void removePlayers() {
-        playersInsideFort.replaceAll((i, v) -> new HashSet<>());
+        playersInsideFort.forEach((fortId, uuids) -> {
+            for (UUID uuid : uuids) {
+                removePlayer(uuid);
+            }
+        });
+    }
+
+    @Override
+    public void onDisable() {
+        removePlayers();
     }
 }

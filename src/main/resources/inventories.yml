@@ -74,6 +74,29 @@ fort_building_manage:
         - "&7Dane: "
         - "&7↳ Poziom: &e%level%"
 
+fort_building_blocks_required:
+  title: "Wymagane bloki"
+  items:
+    block:
+      name: "&6Blok"
+      lore:
+        - "&7Dane: "
+        - "&7↳ Typ: &e%type%"
+        - "&7↳ Ilość: &e%amount%"
+        - "&7Posiadane: "
+        - "&7↳ Skarbiec: &e%vault%"
+        - "&7↳ Ender chest: &e%ender_chest%"
+        - "&7↳ Ekwipunek: &e%inventory%"
+
+fort_vault:
+  title: "Skarbiec"
+  items:
+    block:
+      name: "&6Blok"
+      lore:
+        - "&7Dane: "
+        - "&7↳ Typ: &e%type%"
+        - "&7↳ Ilość: &e%amount%"
 global:
   next_page:
     name: "&7Następna strona"
